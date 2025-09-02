@@ -1,0 +1,25 @@
+<!--
+  ⚠️  WARNING: THIS CODE IS FOR REFERENCE AND LEARNING PURPOSES ONLY
+  ⚠️  NOT INTENDED FOR PRODUCTION USE WITHOUT PROPER SECURITY REVIEW
+  ⚠️  Missing: Authentication, Authorization, Input Validation, Rate Limiting
+  ⚠️  Missing: Security middleware, monitoring, comprehensive error handling
+-->
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Reference code only - not production ready -->
+    <Description>Redis Search API Reference Implementation - Educational Use Only</Description>
+    <Authors>Naresh Sanodariya</Authors>
+    <Version>1.0.0-reference</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StackExchange.Redis" Version="2.7.33" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+</Project>

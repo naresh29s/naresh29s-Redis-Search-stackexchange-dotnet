@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Redis Stack with Search module
+  redis:
+    image: redis/redis-stack:latest
+    container_name: redis-search-stack
+    ports:
+      - "6379:6379"    # Redis port
+      - "8001:8001"    # RedisInsight port
+    environment:
+      - REDIS_ARGS=--save 60 1000
+    volumes:
+      - redis_data:/data
+    networks:
+      - redis-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ASP.NET Core API
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: redis-search-api
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__RedisHost=redis
+      - ConnectionStrings__RedisPort=6379
+      - ConnectionStrings__RedisUser=default
+      - ConnectionStrings__RedisPassword=
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - redis-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/api/redis/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  redis-network:
+    driver: bridge
+
+# Usage:
+# docker-compose up -d          # Start services in background
+# docker-compose logs -f api    # View API logs
+# docker-compose down           # Stop and remove containers
